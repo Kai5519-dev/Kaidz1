@@ -1,0 +1,25 @@
+local ScreenGui = Instance.new("ScreenGui")
+local Frame = Instance.new("Frame")
+local Title = Instance.new("TextLabel")
+local WalkspeedBtn = Instance.new("TextButton")
+
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+Frame.Parent = ScreenGui
+Frame.Size = UDim2.new(0, 300, 0, 400)
+Frame.Position = UDim2.new(0.5, -150, 0.5, -200)
+Frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+
+Title.Parent = Frame
+Title.Size = UDim2.new(1, 0, 0, 50)
+Title.Text = "Squiiy's Ink Game Script"
+Title.BackgroundColor3 = Color3.fromRGB(255, 0, 128)
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+WalkspeedBtn.Parent = Frame
+WalkspeedBtn.Position = UDim2.new(0, 10, 0, 60)
+WalkspeedBtn.Size = UDim2.new(0, 280, 0, 40)
+WalkspeedBtn.Text = "Set Walkspeed to 35"
+WalkspeedBtn.BackgroundColor3 = Color3.fromRGB(255, 0, 128)
+WalkspeedBtn.MouseButton1Click:Connect(function()
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 35
+end)
