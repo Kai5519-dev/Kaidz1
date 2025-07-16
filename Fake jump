@@ -1,0 +1,62 @@
+-- Đặt script này trong StarterPlayerScripts
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+
+-- GUI chính
+local screenGui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+screenGui.ResetOnSpawn = false
+
+-- Nút Fake Jump
+local toggleButton = Instance.new("TextButton", screenGui)
+toggleButton.Size = UDim2.new(0, 120, 0, 40)
+toggleButton.Position = UDim2.new(0, 10, 0, 10)
+toggleButton.Text = "Fake Jump: OFF"
+toggleButton.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+toggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+toggleButton.Font = Enum.Font.SourceSansBold
+toggleButton.TextSize = 20
+toggleButton.Active = true
+toggleButton.Draggable = true -- Cho phép kéo
+
+-- Nút Lock
+local lockButton = Instance.new("TextButton", screenGui)
+lockButton.Size = UDim2.new(0, 60, 0, 40)
+lockButton.Position = UDim2.new(0, 140, 0, 10)
+lockButton.Text = "Lock"
+lockButton.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+lockButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+lockButton.Font = Enum.Font.SourceSansBold
+lockButton.TextSize = 18
+lockButton.Active = true
+lockButton.Draggable = true -- Nút này cũng kéo được
+
+-- Biến điều khiển
+local fakeJumpEnabled = false
+local isLocked = false
+
+-- Bật/Tắt Fake Jump
+toggleButton.MouseButton1Click:Connect(function()
+	fakeJumpEnabled = not fakeJumpEnabled
+	toggleButton.Text = "Fake Jump: " .. (fakeJumpEnabled and "ON" or "OFF")
+	
+	if fakeJumpEnabled then
+		humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+	end
+end)
+
+-- Khi chạm đất, tự nhảy nếu bật
+humanoid.StateChanged:Connect(function(old, new)
+	if fakeJumpEnabled and new == Enum.HumanoidStateType.Landed then
+		task.wait()
+		humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+	end
+end)
+
+-- Lock / Unlock nút Fake Jump
+lockButton.MouseButton1Click:Connect(function()
+	isLocked = not isLocked
+	lockButton.Text = isLocked and "Unlock" or "Lock"
+	toggleButton.Draggable = not isLocked -- chỉ khoá nút Fake Jump
+end)
